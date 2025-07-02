@@ -1,5 +1,8 @@
 import { useTerminal } from "../../main";
-import type { TerminalProps } from "./Terminal";
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
+
+export interface TerminalProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
 export function Terminal({ children, ...props }: TerminalProps) {
   const { getOutputHistory } = useTerminal();

@@ -1,17 +1,36 @@
-import { createContext, useState } from "react";
-import type {
-  TerminalContextProps,
-  TerminalContextProviderProps,
-} from "./TerminalContext";
+import { createContext, useState, useContext, type ReactNode } from "react";
+import type { TerminalCommand } from "../../types/TerminalCommand";
 
-export const TerminalContext = createContext({} as TerminalContextProps);
+interface TerminalContextProps {
+  getInputHistory: () => string[];
+  getOutputHistory: () => string[];
+  updateInputHistory: (newInput: string) => void;
+  clearOutputHistory: () => void;
+}
+
+interface TerminalContextProviderProps {
+  children: ReactNode;
+  commands: TerminalCommand[];
+}
+
+export const TerminalContext = createContext<TerminalContextProps | null>(null);
+
+export function useTerminalContext() {
+  const context = useContext(TerminalContext);
+  if (!context) {
+    throw new Error(
+      "useTerminalContext must be used within a TerminalContextProvider"
+    );
+  }
+  return context;
+}
 
 export function TerminalContextProvider({
   children,
   commands,
 }: TerminalContextProviderProps) {
-  const [inputHistory, setInputHistory] = useState<Array<string>>([]);
-  const [outputHistory, setOutputHistory] = useState<Array<string>>([]);
+  const [inputHistory, setInputHistory] = useState<string[]>([]);
+  const [outputHistory, setOutputHistory] = useState<string[]>([]);
 
   function clearOutputHistory() {
     setOutputHistory([]);
@@ -30,11 +49,9 @@ export function TerminalContextProvider({
     return outputHistory;
   }
 
-  function commandFormatter(value: string): [string, Array<string>] {
-    const [command, rawArgs] = value.split(" ");
-    if (!rawArgs) return [command, []];
-    const args = rawArgs.split(" ");
-    return [command, [...args]];
+  function commandFormatter(value: string): [string, string[]] {
+    const [command, ...args] = value.split(" ");
+    return [command, args];
   }
 
   function updateInputHistory(newInput: string) {
@@ -51,7 +68,6 @@ export function TerminalContextProvider({
     });
   }
 
-  console.log(outputHistory);
   return (
     <TerminalContext.Provider
       value={{
@@ -65,3 +81,5 @@ export function TerminalContextProvider({
     </TerminalContext.Provider>
   );
 }
+
+export type { TerminalContextProps, TerminalContextProviderProps };

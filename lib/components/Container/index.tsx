@@ -21,3 +21,5 @@ export function Container({
     <div className={`${containerStyles({ size })} ${className}`} {...props} />
   );
 }
+
+export type { ContainerProps };
