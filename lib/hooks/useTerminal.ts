@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TerminalContext } from "../components/TerminalContext";
+import { TerminalContext } from "../components/TerminalContext/TerminalContext";
 
 export function useTerminal() {
   const ctx = useContext(TerminalContext);

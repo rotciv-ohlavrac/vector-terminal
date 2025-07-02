@@ -1,10 +1,11 @@
 {
   "name": "vector-terminal",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
-  "main": "dist/main.js",
-  "types": "dist/main.d.ts",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "files": [
     "dist"
   ],
@@ -13,16 +14,14 @@
   ],
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc -b ./tsconfig.lib.json && vite build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {},
   "peerDependencies": {
-    "@tailwindcss/vite": "^4.1.10",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.10",
     "class-variance-authority": "^0.7.1"
   },
   "devDependencies": {

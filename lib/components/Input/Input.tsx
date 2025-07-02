@@ -1,12 +1,19 @@
 import { cva } from "class-variance-authority";
-import type { InputProps } from "./Input";
-import { RightIcon } from "../RightArrow";
+import { RightIcon } from "../RightArrow/RightArrow";
 import { useTerminal } from "../../main";
-import {
-  useState,
-  type ChangeEventHandler,
-  type KeyboardEventHandler,
+import { useState } from "react";
+import type {
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  KeyboardEventHandler,
+  ChangeEventHandler,
 } from "react";
+
+export interface InputProps
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {}
 
 const inputStyles = cva([
   "text-emerald-500",
