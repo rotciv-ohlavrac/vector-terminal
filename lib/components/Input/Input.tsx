@@ -23,7 +23,7 @@ const inputStyles = cva([
 ]);
 
 export function Input({ onChange, onKeyDown, ...props }: InputProps) {
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string>("");
   const { updateInputHistory } = useTerminal();
 
   const changeHandler: ChangeEventHandler<HTMLInputElement> = (
@@ -48,7 +48,7 @@ export function Input({ onChange, onKeyDown, ...props }: InputProps) {
       <RightIcon className="fill-emerald-500" height={12} width={12} />
       <input
         value={value}
-        className={`${inputStyles()}`}
+        className={inputStyles()}
         {...props}
         onChange={changeHandler}
         onKeyDown={keyDownHandler}

@@ -1,5 +1,12 @@
+import type { CommandExecutionApi } from "../components/TerminalContext/TerminalContext";
+
+export type CommandExecutor = (
+  api: CommandExecutionApi,
+  ...args: string[]
+) => string | void | Promise<string | void>;
+
 export interface TerminalCommand {
   input: string;
-  arguments: Array<string>;
-  execute: (...args: Array<unknown>) => string | void;
+  description?: string;
+  execute: CommandExecutor;
 }

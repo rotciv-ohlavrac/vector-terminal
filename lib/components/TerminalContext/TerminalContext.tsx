@@ -1,10 +1,21 @@
-import { createContext, useState, useContext, type ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  type ReactNode,
+  useCallback,
+  useMemo,
+} from "react";
 import type { TerminalCommand } from "../../types/TerminalCommand";
 
+export interface CommandExecutionApi {
+  write: (data: string) => void;
+}
+
 interface TerminalContextProps {
-  getInputHistory: () => string[];
-  getOutputHistory: () => string[];
-  updateInputHistory: (newInput: string) => void;
+  inputHistory: string[];
+  outputHistory: string[];
+  updateInputHistory: (newInput: string) => Promise<void>;
   clearOutputHistory: () => void;
 }
 
@@ -15,14 +26,9 @@ interface TerminalContextProviderProps {
 
 export const TerminalContext = createContext<TerminalContextProps | null>(null);
 
-export function useTerminalContext() {
-  const context = useContext(TerminalContext);
-  if (!context) {
-    throw new Error(
-      "useTerminalContext must be used within a TerminalContextProvider"
-    );
-  }
-  return context;
+function commandFormatter(value: string): [string, string[]] {
+  const [command, ...args] = value.split(" ");
+  return [command, args];
 }
 
 export function TerminalContextProvider({
@@ -32,51 +38,71 @@ export function TerminalContextProvider({
   const [inputHistory, setInputHistory] = useState<string[]>([]);
   const [outputHistory, setOutputHistory] = useState<string[]>([]);
 
-  function clearOutputHistory() {
+  const clearOutputHistory = useCallback(() => {
     setOutputHistory([]);
-  }
+  }, []);
 
-  const baseCommands = [
-    { input: "clear", args: [], execute: () => clearOutputHistory() },
-    ...commands,
-  ];
+  const baseCommands = useMemo(
+    () => [
+      {
+        input: "clear",
+        execute: () => {
+          clearOutputHistory();
+        },
+      },
+      ...commands,
+    ],
+    [commands, clearOutputHistory]
+  );
 
-  function getInputHistory() {
-    return inputHistory;
-  }
+  const updateInputHistory = useCallback(
+    async (newInput: string) => {
+      const [rawCommand, args] = commandFormatter(newInput);
+      const newCommand = baseCommands.find(
+        (command) => command.input === rawCommand
+      );
+      if (!newCommand || !newInput) return;
+      setInputHistory((state) => [newInput, ...state]);
 
-  function getOutputHistory() {
-    return outputHistory;
-  }
+      // Add a placeholder for the new output. We'll be updating this entry.
+      setOutputHistory((state) => ["", ...state]);
 
-  function commandFormatter(value: string): [string, string[]] {
-    const [command, ...args] = value.split(" ");
-    return [command, args];
-  }
+      const api: CommandExecutionApi = {
+        write: (data: string) => {
+          setOutputHistory((state) => {
+            return [data, ...state];
+          });
+        },
+      };
 
-  function updateInputHistory(newInput: string) {
-    const [rawCommand, args] = commandFormatter(newInput);
-    const newCommand = baseCommands.find(
-      (command) => command.input === rawCommand
-    );
-    if (!newCommand || !newInput) return;
-    setInputHistory((state) => [newInput, ...state]);
-    setOutputHistory((state) => {
-      const result = newCommand.execute(...args);
-      if (!result) return state;
-      return [result, ...state];
-    });
-  }
+      // The `execute` function can now be async and use the `write` api.
+      const result = await newCommand.execute(api, ...args);
+
+      // If the command returns a string directly (for simple, non-streaming commands),
+      // we set it as the final output, overwriting any streamed chunks.
+      if (typeof result === "string") {
+        setOutputHistory((currentOutput) => {
+          const newOutput = [...currentOutput];
+          newOutput[0] = result;
+          return newOutput;
+        });
+      }
+    },
+    [baseCommands]
+  );
+
+  const value = useMemo(
+    () => ({
+      inputHistory,
+      outputHistory,
+      updateInputHistory,
+      clearOutputHistory,
+    }),
+    [inputHistory, outputHistory, updateInputHistory, clearOutputHistory]
+  );
 
   return (
-    <TerminalContext.Provider
-      value={{
-        getInputHistory,
-        updateInputHistory,
-        clearOutputHistory,
-        getOutputHistory,
-      }}
-    >
+    <TerminalContext.Provider value={value}>
       {children}
     </TerminalContext.Provider>
   );
