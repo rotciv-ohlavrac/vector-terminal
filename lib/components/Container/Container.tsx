@@ -1,5 +1,11 @@
 import { cva } from "class-variance-authority";
-import type { ContainerProps } from "./Container";
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
+import type { Size } from "../../main";
+
+interface ContainerProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  size?: Size;
+}
 
 const containerStyles = cva(["bg-black", "p-4"], {
   variants: {

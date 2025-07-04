@@ -5,12 +5,13 @@ export interface TerminalProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
 export function Terminal({ children, ...props }: TerminalProps) {
-  const { getOutputHistory } = useTerminal();
+  const { outputHistory } = useTerminal();
 
   function renderOutputHistory() {
-    const outputHistory = getOutputHistory();
-    return outputHistory.map((output) => (
-      <p className="text-emerald-500">{output}</p>
+    return outputHistory.map((output, index) => (
+      <p key={`output-${index}`} className="text-emerald-500">
+        {output}
+      </p>
     ));
   }
 
