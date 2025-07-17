@@ -1,9 +1,5 @@
-import {
-  Container,
-  Input,
-  Terminal,
-  TerminalContextProvider,
-} from "../lib/main";
+import { TerminalContextProvider } from "../lib/components/contexts/TerminalContext";
+import { Terminal } from "../lib/main";
 import type { TerminalCommand } from "../lib/types/TerminalCommand";
 
 import "./App.css";
@@ -45,13 +41,9 @@ function App() {
   return (
     <>
       <div className="h-full flex flex-col justify-center items-center">
-        <Container size="full">
-          <TerminalContextProvider commands={commands}>
-            <Terminal>
-              <Input />
-            </Terminal>
-          </TerminalContextProvider>
-        </Container>
+        <TerminalContextProvider commands={commands}>
+          <Terminal />
+        </TerminalContextProvider>
       </div>
     </>
   );
