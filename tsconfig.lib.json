@@ -12,7 +12,13 @@
     "jsx": "react-jsx", // Add this line: Specifies JSX handling
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "pathsToAliases": true,
+    /* Path Aliases */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["lib/*"]
+    }
   },
   "include": ["lib"],
   "exclude": ["lib/**/*.test.ts", "lib/**/*.spec.ts"] // Optional: exclude test files
