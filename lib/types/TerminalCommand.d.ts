@@ -1,4 +1,4 @@
-import type { CommandExecutionApi } from "../components/TerminalContext/TerminalContext";
+import type { CommandExecutionApi } from "../components/contexts/TerminalContext";
 
 export type CommandExecutor = (
   api: CommandExecutionApi,

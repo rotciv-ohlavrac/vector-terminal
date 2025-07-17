@@ -1,8 +1,8 @@
 import { cva } from "class-variance-authority";
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
-import type { Size } from "../../main";
+import type { Size } from "@/types";
 
-interface ContainerProps
+interface TerminalContainerProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   size?: Size;
 }
@@ -18,14 +18,15 @@ const containerStyles = cva(["bg-black", "p-4"], {
   },
 });
 
-export function Container({
+function TerminalContainer({
   className = "",
-  size = "sm",
+  size = "full",
   ...props
-}: ContainerProps) {
+}: TerminalContainerProps) {
   return (
     <div className={`${containerStyles({ size })} ${className}`} {...props} />
   );
 }
 
-export type { ContainerProps };
+export { TerminalContainer as Container };
+export type { TerminalContainerProps };

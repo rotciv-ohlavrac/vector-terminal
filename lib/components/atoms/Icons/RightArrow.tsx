@@ -2,7 +2,14 @@ import type { SVGProps } from "react";
 
 export function RightIcon(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg {...props} version="1.1" viewBox="0 0 185.343 185.343">
+    <svg
+      width={"w-full"}
+      height={"h-full"}
+      {...props}
+      version="1.1"
+      viewBox="0 0 185.343 185.343"
+      fill="currentColor"
+    >
       <g strokeWidth="0"></g>
       <g></g>
       <g>

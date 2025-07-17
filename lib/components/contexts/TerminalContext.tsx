@@ -24,14 +24,14 @@ interface TerminalContextProviderProps {
   commands: TerminalCommand[];
 }
 
-export const TerminalContext = createContext<TerminalContextProps | null>(null);
+const TerminalContext = createContext<TerminalContextProps | null>(null);
 
 function commandFormatter(value: string): [string, string[]] {
   const [command, ...args] = value.split(" ");
   return [command, args];
 }
 
-export function TerminalContextProvider({
+function TerminalContextProvider({
   children,
   commands,
 }: TerminalContextProviderProps) {
@@ -108,4 +108,11 @@ export function TerminalContextProvider({
   );
 }
 
+function useTerminal() {
+  const ctx = useContext(TerminalContext);
+  if (!ctx) throw new Error("useTerminal should be use within TerminalContext");
+  return ctx;
+}
+
+export { useTerminal, TerminalContextProvider };
 export type { TerminalContextProps, TerminalContextProviderProps };

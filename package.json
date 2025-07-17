@@ -18,11 +18,10 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {},
   "peerDependencies": {
+    "class-variance-authority": "^0.7.1",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "class-variance-authority": "^0.7.1"
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
@@ -43,6 +42,7 @@
     "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4",
-    "vite-plugin-lib-inject-css": "^2.2.2"
+    "vite-plugin-lib-inject-css": "^2.2.2",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
