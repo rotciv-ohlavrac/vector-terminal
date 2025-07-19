@@ -20,7 +20,11 @@ export function Terminal({
 
   function renderOutputHistory() {
     return outputHistory.map((output, index) => (
-      <p key={`output-${index}`} className="text-emerald-500">
+      <p
+        key={`output-${index}`}
+        className="text-emerald-500"
+        data-testid="component-terminal-output-item"
+      >
         {output}
       </p>
     ));

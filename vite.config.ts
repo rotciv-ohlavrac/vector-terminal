@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
@@ -8,6 +9,10 @@ import { libInjectCss } from "vite-plugin-lib-inject-css";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  test: {
+    globals: true,
+    environment: "jsdom",
+  },
   plugins: [
     react(),
     tsconfigPaths(),

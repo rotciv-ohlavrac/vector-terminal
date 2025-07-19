@@ -32,7 +32,7 @@ function InputIcon({
   const IconComponent = Icons[icon];
   return (
     <span className={iconContainerStyles({ side, className })} {...props}>
-      <IconComponent />
+      <IconComponent data-testid="component-input-icon" />
     </span>
   );
 }

@@ -48,6 +48,7 @@ function InputRoot({ onChange, onKeyDown, ...props }: InputRootProps) {
       {...props}
       onChange={changeHandler}
       onKeyDown={keyDownHandler}
+      data-testid="component-input-root"
     />
   );
 }

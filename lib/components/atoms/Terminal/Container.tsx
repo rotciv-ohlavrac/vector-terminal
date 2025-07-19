@@ -24,7 +24,11 @@ function TerminalContainer({
   ...props
 }: TerminalContainerProps) {
   return (
-    <div className={`${containerStyles({ size })} ${className}`} {...props} />
+    <div
+      className={`${containerStyles({ size })} ${className}`}
+      {...props}
+      data-testid="component-terminal-container"
+    />
   );
 }
 

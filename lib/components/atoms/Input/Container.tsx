@@ -7,7 +7,13 @@ interface InputContainerProps
 const containerStyles = cva(["flex", "items-center"]);
 
 function InputContainer({ className = "", ...props }: InputContainerProps) {
-  return <div {...props} className={`${containerStyles()} ${className}`} />;
+  return (
+    <div
+      {...props}
+      className={`${containerStyles()} ${className}`}
+      data-testid="component-input-container"
+    />
+  );
 }
 
 export { InputContainer as Container };
